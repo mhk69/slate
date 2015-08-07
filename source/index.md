@@ -61,6 +61,8 @@ The following are the main components of building with Sense360
   
 * **Cooldown (optional)**: The amount of time to wait before the same trigger can fire again. Examples: 8 hours, 1 week. There can only be one cooldown per recipe.
 
+[Delegate](#delegate): The developer
+
 # Triggers
 
 Triggers define the conditions under which your app should be notified.  There are 3 categories of places that you can be notified about.  These categories are:
@@ -371,53 +373,21 @@ Default | Cooldown.create(oncePer: 30, frequency: .Minutes)!
 ### Caveats
 - The minimum cooldown time is 5 minutes.
 
-# SenseSdk
 
-The SenseSdk is the main entry point into the SDK. It allows you to register and unregister recipes.
 
-<aside class="warning"> You must call enableSdkWithKey in your AppDelegate's applicationDidFinishLaunching method.
-</aside>
+# Delegate
 
-```swift
-// Registering a recipe and delegate
-let success = SenseSdk.register(recipe: restaurantRecipe, delegate: self, errorPtr: nil)
-```
+The delegate is where you defined what YOUR app will do upon a trigger firing.  For example, if you want to send a message whenever a user enters a restaurtant, the delegate is where you write the code that would send the text message.
 
-```objective_c
-// Registering a recipe and delegate
-Boolean success = [SenseSdk registerWithRecipe:recipe delegate:callback errorPtr:nil];
-```
-
-Function | Parameters | Description
---------- | ------- |------- 
-enableSdkWithKey | String | Enable the SDK with your application key (provided by Sense360)
-register | [Recipe](#recipes), [RecipeFiredDelegate](#handling-trigger-firing), [SenseSdkErrorPointer](#sensesdkerrorpointer) | Starts the recipe and registers the delegate to be called when the trigger fires.
-unregister | String | Stops and removes the recipe from SenseSdk by name.
-findRecipe | String | Finds and returns a recipe by name.
-
-<aside class="notice"> Your application key will be validated regulary every few days.
-</aside>
-
-## SenseSdkErrorPointer
-
-This class is used to communicate any errors on a registration of a recipe with the [SenseSdk](#sensesdk).
-
-Containing Class | Property | Description
---------- | ------- |------- | ---------
-SenseSdkError | message | The error message
-
-# Handling a Recipe Firing
-
-Acting on recipes is done by implementing the RecipeFiredDelegate protocol. In order to implement the protocol, you must define the recipeFired method, which has one parameter of type RecipeFiredArgs. 
-
-The RecipeFiredArgs contains trigger-specific information which is passed through an array of TriggerFiredArgs. 
+In order to setup a delegate, you need to create a class that implements the RecipeFiredDelegate protocol.  In the example below, we will be logging all places received by the trigger once it fires:
 
 ```swift
 class MyCallback : RecipeFiredDelegate {
   func recipeFired(args: RecipeFiredArgs) {
-      NSLog("Recipe \(args.recipe.name) fired at \(args.timestamp).")
       for trigger in args.triggersFired {
           for place in trigger.places {
+              //This is where YOU would write your custom code.
+              //As an example, I am logging the description of the place the user has arrived
               NSLog(place.description)
           }
       }
@@ -430,9 +400,10 @@ class MyCallback : RecipeFiredDelegate {
 
 @implementation MyCallback {
   - (void)recipeFired:(RecipeFiredArgs*) args {
-      NSLog(@"Recipe %@ fired at %@.", [[args recipe] name], [args timestamp]);
       for (TriggerFiredArgs* trigger in [args triggersFired]) {
           for (NSObject <NSCoding, Place>* place in [trigger places]) {
+              //This is where YOU would write your custom code.
+              //As an example, I am logging the description of the place the user has arrived
               NSLog(@"%@", [place description]);
           }
       }
@@ -444,16 +415,18 @@ class MyCallback : RecipeFiredDelegate {
 After which time, iOS is free to shutdown your app.
 </aside>
 
+
+There are 3 important classes that contain the information on where and when your trigger fired:
+
+
 ## RecipeFiredArgs
 
 The details of the recipe when it is fired.
 
 Property | Type | Description
 --------- | ------- |------- 
-timestamp | NSDate | The time at which the recipe was fired
-recipe | [Recipe](#recipes) | The recipe itself
-triggersFired | [[TriggerFiredArgs](#triggerfiredargs)] | The pertinent infromation on the triggers that fired. Will hold a single value per trigger.
-confidenceLevel | [ConfidenceLevel](#confidence-levels) | The combined confidence levels of all triggers within the recipe
+recipe | [Recipe](#recipes) | The recipe you registered with the Sdk
+triggersFired | [[TriggerFiredArgs](#triggerfiredargs)] | An array of all triggers that fired within your recipe
 
 
 ## TriggerFiredArgs
@@ -462,11 +435,10 @@ The details of a trigger when it fires.
 
 Property | Type | Description
 --------- | ------- |-------
+places | [[Place](#places)] | An array of places that matches your trigger (Currently, this will only return a single value)
 timestamp | NSDate | The time at which this trigger fired
-places | [[Place](#places)] | The places that caused this trigger to fired
-confidenceLevel | [ConfidenceLevel](#confidence-levels) | The confidence that the corresponding action actually occurred
 
-## Places
+## Types of places
 
 Below is a list of the types of places that can be passed back when the Recipe fires. Which one is presented depends on the type of trigger you use.
 
@@ -475,17 +447,15 @@ Below is a list of the types of places that can be passed back when the Recipe f
 Property | Type | Description
 --------- | ------- |-------
 customIdentifier | String | A unique string which identifies the custom geofence (provided by you)
-location | Location | The latitude and longitude of the center
+location | Location | The latitude and longitude of the geofence center point
 radius | Double | The radius of the geofence
 
 ### PoiPlace
 
 Property | Type | Description
 --------- | ------- |-------
-id | String | A unique string which identifies the place (provided by us)
-location | Location | The latitude and longitude of the center
-radius | Double | The radius of the geofence
-types | [[PoiType](#poitype)] | The category of the place
+location | Location | The latitude and longitude of the poi's center point
+types | [[PoiType](#poitype)] | A list of categories for this place
 
 
 #### PoiType
@@ -507,14 +477,12 @@ Stadium |
 Hospital |
 Parking |
 NightClub |
-University
+University |
 
 
 ### PersonalizedPlace
 Property | Type | Description
 --------- | ------- |-------
-location | Location | The latitude and longitude of the center
-radius | Double | The radius of the geofence
 personalizedPlaceType | [PersonalizedPlaceType](#personalizedplacetype) | The type of place
 
 #### PersonalizedPlaceType
@@ -523,18 +491,6 @@ personalizedPlaceType | [PersonalizedPlaceType](#personalizedplacetype) | The ty
 --------- |
 Home |
 Work |
-
-
-
-## Confidence Levels
-
-When a trigger is fired, it brings along one of three confidence levels.
-
- |
---------- |
-High |
-Medium |
-Low |
 
 
 ## Working with different types of places
@@ -616,6 +572,42 @@ func recipeFired(args: RecipeFiredArgs) {
 
 ```
 
+
+# SenseSdk
+
+The SenseSdk is the main entry point into the SDK. It allows you to register and unregister recipes.
+
+<aside class="warning"> You must call enableSdkWithKey in your AppDelegate's applicationDidFinishLaunching method.
+</aside>
+
+```swift
+// Registering a recipe and delegate
+let success = SenseSdk.register(recipe: restaurantRecipe, delegate: self, errorPtr: nil)
+```
+
+```objective_c
+// Registering a recipe and delegate
+Boolean success = [SenseSdk registerWithRecipe:recipe delegate:callback errorPtr:nil];
+```
+
+Function | Parameters | Description
+--------- | ------- |------- 
+enableSdkWithKey | String | Enable the SDK with your application key (provided by Sense360)
+register | [Recipe](#recipes), [RecipeFiredDelegate](#handling-trigger-firing), [SenseSdkErrorPointer](#sensesdkerrorpointer) | Starts the recipe and registers the delegate to be called when the trigger fires.
+unregister | String | Stops and removes the recipe from SenseSdk by name.
+findRecipe | String | Finds and returns a recipe by name.
+
+<aside class="notice"> Your application key will be validated regulary every few days.
+</aside>
+
+## SenseSdkErrorPointer
+
+This class is used to communicate any errors on a registration of a recipe with the [SenseSdk](#sensesdk).
+
+Containing Class | Property | Description
+--------- | ------- |------- | ---------
+SenseSdkError | message | The error message
+
 # Testing
 
 ## Testing while at your desk
@@ -633,7 +625,7 @@ let errorPointer = SenseSdkErrorPointer.create()
 // This method should only be used for testing
 SenseSdkTestUtility.fireTrigger(
     fromRecipe: "ArrivedAtRestaurant",
-    confidenceLevel: ConfidenceLevel.Medium,
+    ConfidenceLevel: ConfidenceLevel.Medium,
     places: [place],
     errorPtr: errorPointer
 )
