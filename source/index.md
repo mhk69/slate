@@ -43,6 +43,8 @@ You can download the stand alone framework <a href='https://s3-us-west-1.amazona
 
 To get up running quickly we also have provided a <a href="http://www.sense360.com/getting_started.html">Quick Start Guide</a>.
 
+We also have a code generator to help with your specific case <a href="http://www.sense360.com/code_generator.html">Code Generator</a>.
+
 # API Concepts
 
 The following are the main components of building with Sense360
