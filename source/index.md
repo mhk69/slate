@@ -612,9 +612,35 @@ SenseSdkError | message | The error message
 
 # Testing
 
-## Testing while at your desk
+## Simulating Location
 
-Testing in the real world is time consuming, so we provide a way to easily fire anyone of your recipes.  This can also be very helpful when unit testing your own code.
+Included with the SDK (and both starter projects) are sample GPX routes for each POI type. You can use these files to test your triggers and recipes:
+
+1. Drag the file(s) you wish to test with into your Xcode project or click Debug -> Simulate Location -> Add GPX File to Project
+  <img src = "img/gpx_step1a.png"/>
+  <img src = "img/gpx_step1b.png"/>
+2. Make sure that at least one recipe is being registered (very important!)
+3. Turn your app on
+4. Simulate location (using the arrow, or Debug -> Simulate Location -> GPX File) and wait for a notification!
+  <img src = "img/gpx_step4.png"/>
+5. Make sure to turn off simulating a location when you are finished (very important!!)
+
+<aside class="warning"> Forgetting to turn off a simulated location may result in non-accurate location on your device.
+</aside>
+
+## Debug Notifications
+
+If you wish to verify that your triggers and recipes are being registered properly, you can enable Debug Notifications with the SDK:
+
+1. Open your info.plist. (go to your project and hit the Info tab at the top of the screen)
+2. Add the key "sense360:sendDebugNotifications"
+3. Set it to a Boolean with a value of YES
+
+You should get notifications every time we believe the phone has arrived at a place. At that point, our 2nd tier logic starts to figure out exactly where the device is (i.e. a POI type, home, work, etc).
+
+## Trigger without using location
+
+Testing in the real world is time consuming, so we provide a way to easily fire anyone of your recipes. Additionally, the GPX routes may not be entirely accurate for your specific needs. This method can also be very helpful when unit testing your own code.
 
 The example below shows you how to fire a recipe called "ArrivedAtRestaurant" with a restaurant called "Big Foot's Burgers".
 
@@ -765,12 +791,9 @@ For example, if you are testing entering a restaurant. Make sure that you are no
 
 Because we're developers too, we understand that any extra insight in how the SDK is working is extremely valuable.  This is why we provided a debug setting that will send you different notifications during your real-world testing.  To give it a try:
 
-1. Open your info.plist. (go to your project and hit the Info tab at the top of the screen)
-2. Add the key "sense360:sendDebugNotifications"
-3. Set it to a Boolean with a value of YES
-4. Make sure that at least one recipe is being registered (very important!)
-5. Turn your app on
-6. Go at least 1 kilometer away from your location, sit down, and wait for a notification!
+1. Make sure that at least one recipe is being registered (very important!)
+2. Turn your app on
+3. Move at least a kilometer from your current location and then got a place that you expect your trigger to fire (e.g. a restaurant). Sit down and wait for the notification!
 
 
 # Thanks for using Sense360
