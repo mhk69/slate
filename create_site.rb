@@ -22,6 +22,7 @@ def main
   run("cp source/javascripts/lib/GA.js ../PublicWebsite/javascripts/lib/")
   run("cp -r build/fonts/ ../PublicWebsite/fonts/")
   run("cp -r build/stylesheets/ ../PublicWebsite/stylesheets/")
+  run("cp -r build/img/ ../PublicWebsite/img/")
   run("cp build/index.html ../PublicWebsite/docs.html")
 end
 
