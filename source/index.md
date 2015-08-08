@@ -37,7 +37,7 @@ The same project but for objective-c can be found at: <a href='https://github.co
 
 # Download
 
-You can download the stand alone framework <a href='https://s3-us-west-1.amazonaws.com/sense360-public-files/SenseSdk.framework.zip' onclick= "clickedDownloadLibraryLink()">here</a>.
+You can download the stand alone framework <a href='https://s3-us-west-1.amazonaws.com/sense360-public-files/SenseSdk.zip' onclick= "clickedDownloadLibraryLink()">here</a>.
 
 # Quick Start
 
@@ -62,8 +62,6 @@ The following are the main components of building with Sense360
 * **Window (optional)**: The period of time during which you want to listen for the trigger. Examples: 9am to 12pm and 4pm - 11pm. There can only be one window per recipe.
   
 * **Cooldown (optional)**: The amount of time to wait before the same trigger can fire again. Examples: 8 hours, 1 week. There can only be one cooldown per recipe.
-
-[Delegate](#delegate): The developer
 
 # Triggers
 
