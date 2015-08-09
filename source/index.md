@@ -612,7 +612,10 @@ SenseSdkError | message | The error message
 
 ## Simulating Location
 
-Included with the SDK (and both starter projects) are sample GPX routes for each POI type. You can use these files to test your triggers and recipes:
+Included with the SDK (and both starter projects) are sample GPX routes that will allow you to trigger recipes for each POI type. These simulate real world conditions and will take time to trigger your recipes. While building, you should use the SenseSdkTestUtilitiy (see [Unit Testing](#unit-testing) section below). These should be use to minimize your time testing in the real world.
+
+<aside class="warning">These location simulations will only work on a real iPhone device. They will NOT work on the simulator.
+</aside>
 
 1. Drag the file(s) you wish to test with into your Xcode project or click Debug -> Simulate Location -> Add GPX File to Project
   <img src = "img/gpx_step1a.png"/>
@@ -621,10 +624,7 @@ Included with the SDK (and both starter projects) are sample GPX routes for each
 3. Turn your app on
 4. Simulate location (using the arrow, or Debug -> Simulate Location -> GPX File) and wait for a notification!
   <img src = "img/gpx_step4.png"/>
-5. Make sure to turn off simulating a location when you are finished (very important!!)
-
-<aside class="warning"> Forgetting to turn off a simulated location may result in non-accurate location on your device.
-</aside>
+5. Make sure to turn off simulating a location when you are finished by going to the location menu and selecting "Don't simulate location". If you don't turn off location simulation, your phone will continue to simulate location until you restart your device.
 
 ## Debug Notifications
 
@@ -636,9 +636,9 @@ If you wish to verify that your triggers and recipes are being registered proper
 
 You should get notifications every time we believe the phone has arrived at a place. At that point, our 2nd tier logic starts to figure out exactly where the device is (i.e. a POI type, home, work, etc).
 
-## Trigger without using location
+## Unit Testing
 
-Testing in the real world is time consuming, so we provide a way to easily fire anyone of your recipes. Additionally, the GPX routes may not be entirely accurate for your specific needs. This method can also be very helpful when unit testing your own code.
+While you are building your application, you should use this method of testing because testing in the real world is time consuming. The SenseSdkTestUtility will trigger your recipe immediately if your recipe is registered properly. This method is helpful if you need to do quick iterations on your feature or if you want to verify your code works well.
 
 The example below shows you how to fire a recipe called "ArrivedAtRestaurant" with a restaurant called "Big Foot's Burgers".
 
@@ -787,12 +787,9 @@ Please note that when you do real-world testing you need to mimic the action you
 
 For example, if you are testing entering a restaurant. Make sure that you are not in or around the restaurant before starting the test and that you are at least 1km away. Drive, walk, or bike to the restaurant and make sure to enter it fully, sit down at a table, and stay at least five minutes. The more your testing reflects the way you would perform that action in the real-world, the more likely it is that our algorithms will pick it up.
 
-Because we're developers too, we understand that any extra insight in how the SDK is working is extremely valuable.  This is why we provided a debug setting that will send you different notifications during your real-world testing.  To give it a try:
-
 1. Make sure that at least one recipe is being registered (very important!)
 2. Turn your app on
 3. Move at least a kilometer from your current location and then got a place that you expect your trigger to fire (e.g. a restaurant). Sit down and wait for the notification!
-
 
 # Thanks for using Sense360
 <div style="height:120px;"></div>
