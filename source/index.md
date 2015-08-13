@@ -617,6 +617,9 @@ Included with the SDK (and both starter projects) are sample GPX routes that wil
 <aside class="warning">These location simulations will only work on a real iPhone device. They will NOT work on the simulator.
 </aside>
 
+<aside class="warning">Since you are simulating real-world behavior, triggers can take 5 - 20 minutes to fire during simulated testing.
+</aside>
+
 1. Drag the file(s) you wish to test with into your Xcode project or click Debug -> Simulate Location -> Add GPX File to Project
   <img src = "img/gpx_step1a.png"/>
   <img src = "img/gpx_step1b.png"/>
