@@ -38,10 +38,10 @@ The same project but for objective-c can be found at: <a href='https://github.co
 # Download
 
 ## Latest
-You can download the latest framework <a href='https://s3-us-west-1.amazonaws.com/sense360-public-files/sdk/SenseSdk.framework1.2.zip' onclick= "clickedDownloadLibraryLink()">here</a> (Version 1.2). Release Notes can be found [here](#version-1.2).
+You can download the latest framework <a href='https://s3-us-west-1.amazonaws.com/sense360-public-files/sdk/SenseSdk.framework-latest.zip' onclick= "clickedDownloadLibraryLink()">here</a> (Version 1.2). Release Notes can be found [here](#version-1.2).
 
 ### Previous
-- <a href='https://s3-us-west-1.amazonaws.com/sense360-public-files/sdk/SenseSdk.framework1.1.zip'>Download Version 1.1</a>
+- <a href='https://s3-us-west-1.amazonaws.com/sense360-public-files/sdk/SenseSdk.framework-1.1.zip'>Download Version 1.1</a>
 
 # Quick Start
 
