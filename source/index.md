@@ -37,7 +37,11 @@ The same project but for objective-c can be found at: <a href='https://github.co
 
 # Download
 
-You can download the stand alone framework <a href='https://s3-us-west-1.amazonaws.com/sense360-public-files/SenseSdk.zip' onclick= "clickedDownloadLibraryLink()">here</a>.
+## Latest
+You can download the latest framework <a href='https://s3-us-west-1.amazonaws.com/sense360-public-files/sdk/SenseSdk.framework1.2.zip' onclick= "clickedDownloadLibraryLink()">here</a> (Version 1.2). Release Notes can be found [here](#version-1.2).
+
+### Previous
+- <a href='https://s3-us-west-1.amazonaws.com/sense360-public-files/sdk/SenseSdk.framework1.1.zip'>Download Version 1.1</a>
 
 # Quick Start
 
@@ -793,6 +797,18 @@ For example, if you are testing entering a restaurant. Make sure that you are no
 1. Make sure that at least one recipe is being registered (very important!)
 2. Turn your app on
 3. Move at least a kilometer from your current location and then got a place that you expect your trigger to fire (e.g. a restaurant). Sit down and wait for the notification!
+
+# Release Notes
+
+## Version 1.2
+ 
+- Added PoiType.All category to allow you to listen for all the places of interest categories that Sense360 supports
+- Added new PoiType categories: Cafe, Gym, Lodging, Police Department, Bus Station, Department Store, Fire Station, Stadium, Hospital, Parking, Nightclub, University
+- Added sense360:sendDebugNotifications info plist item to help in debugging (http://www.sense360.com/docs.html#testing-while-at-your-desk)
+- Fixed bug when an exit trigger was combined with a time window
+- Added more details when a CustomGeofenceTrigger fires
+- Improved arrivedBy and departedBy detection
+- Added custom GPX files for testing each type of POI Trigger
 
 # Thanks for using Sense360
 <div style="height:120px;"></div>
