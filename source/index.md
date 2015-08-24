@@ -598,8 +598,9 @@ Function | Parameters | Description
 --------- | ------- |------- 
 enableSdkWithKey | String | Enable the SDK with your application key (provided by Sense360)
 register | [Recipe](#recipes), [RecipeFiredDelegate](#handling-trigger-firing), [SenseSdkErrorPointer](#sensesdkerrorpointer) | Starts the recipe and registers the delegate to be called when the trigger fires.
-unregister | String | Stops and removes the recipe from SenseSdk by name.
 findRecipe | String | Finds and returns a recipe by name.
+unregister | String | Stops and removes the recipe from the SenseSdk by name.
+unregisterAll | | Stops and removes ALL recipes from the SenseSdk.
 
 <aside class="notice"> Your application key will be validated regulary every few days.
 </aside>
