@@ -53,19 +53,10 @@ We also have a code generator to help with your specific case <a href="http://ww
 
 The following are the main components of building with Sense360
 
-[Triggers](#triggers): The real-world event that you want to listen for (can be a place, action, or contextual element). Example triggers are “has arrived at airport”, “has exited work”, or “is 100 miles from home”
+[Trigger](#triggers): The real-world event that you want to listen for (can be a place, action, or contextual element). Example triggers are “has arrived at airport”, “has exited work”, or “is 100 miles from home”
 
-[Recipes](#recipes):  A collection of elements (including the Trigger) that defines **when** you want to listen for the trigger, and **what** you want to happen when the trigger is fired. Recipes gives you the flexibility to do whatever you want upon a Trigger event and are constructed of the following:
+[Delegate](#delegate): The method that is called when the trigger is fired.  This is where you, the developer, can act when the trigger fires.
 
-* **Unique Id (required)**: A unique identifier amongst all recipes within your app. Examples: "ID-1234" or "EnteredWork".
-
-* **Delegate (required)**: The method that is called when the trigger is fired.
-
-* **Trigger (required)**: The real-world event that you want to listen for. There can only be one trigger per recipe.
-
-* **Window (optional)**: The period of time during which you want to listen for the trigger. Examples: 9am to 12pm and 4pm - 11pm. There can only be one window per recipe.
-  
-* **Cooldown (optional)**: The amount of time to wait before the same trigger can fire again. Examples: 8 hours, 1 week. There can only be one cooldown per recipe.
 
 # Triggers
 
@@ -77,55 +68,52 @@ Triggers define the conditions under which your app should be notified.  There a
 
 All triggers are built by the class FireTrigger.  Within there, you will find every function you need to get going.
 
-<aside class="notice"> IMPORTANT: A trigger on its own does nothing. You must build your triggers, and then add it to a Recipe in order to utilize the trigger.
-</aside>
-
 ## Place of Interest
 
 Gives you the ability to be notified when a user enters or exits a particular POI type.
 
 ```swift
 // Will notify you when the user enters an Airport
-let airportTrigger: Trigger? = FireTrigger.whenEntersPoi(.Airport)
+let restaurantTrigger = FireTrigger.whenEntersPoi("ArrivedAtRestaurant", type:.Restaurant)
 ```
 
 ```objective_c
 // Will notify you when the user enters an Airport
-Trigger *restaurantTrigger = [FireTrigger whenEntersPoi:PoiTypeRestaurant conditions:nil errorPtr:nil];
+Trigger *restaurantTrigger = [FireTrigger whenEntersPoi:@"ArriveAtRestaurtant" type:PoiTypeRestaurant conditions:nil errorPtr:nil];
 ```
 
 It is also possible to fire a trigger when a user enters or exits any of the POI categories specified below.  If you wish to do this, use the "PoiType.All" category.
 
 ```swift
 // Will notify you when the user enters any category Sense360 supports
-let allPoiTypesTrigger: Trigger? = FireTrigger.whenEntersPoi(.All)
+let allPoiTypesTrigger = FireTrigger.whenEntersPoi("ArrivedAtPoi", type: .All)
 ```
 
 ```objective_c
 // Will notify you when the user enters any category Sense360 supports
-Trigger *allPoiTypesTrigger = [FireTrigger whenEntersPoi:PoiTypeAll conditions:nil errorPtr:nil];
+Trigger *allPoiTypesTrigger = [FireTrigger whenEntersPoi:@"ArrivedAtPoi" type:PoiTypeAll conditions:nil errorPtr:nil];
 ```
 
 Supported POI types:
 
 Category | Transitions | |
 --------- | ------- |------- |
-Airport | .whenEntersPoi(.Airport) | .whenExitsPoi(.Airport)
-Bar | .whenEntersPoi(.Bar) | .whenExitsPoi(.Bar)
-Restaurant | .whenEntersPoi(.Restaurant) | .whenExitsPoi(.Restaurant)
-Mall | .whenEntersPoi(.Mall) | .whenExitsPoi(.Mall)
-Cafe | .whenEntersPoi(.Cafe) | .whenExitsPoi(.Cafe)
-Gym | .whenEntersPoi(.Gym) | .whenExitsPoi(.Gym)
-Lodging | .whenEntersPoi(.Lodging) | .whenExitsPoi(.Lodging)
-PoliceDepartment | .whenEntersPoi(.PoliceDepartment) | .whenExitsPoi(.PoliceDepartment)
-BusStation | .whenEntersPoi(.BusStation) | .whenExitsPoi(.BusStation)
-DepartmentStore | .whenEntersPoi(.DepartmentStore) | .whenExitsPoi(.DepartmentStore)
-FireStation | .whenEntersPoi(.FireStation) | .whenExitsPoi(.FireStation)
-Stadium | .whenEntersPoi(.Stadium) | .whenExitsPoi(.Stadium)
-Hospital | .whenEntersPoi(.Hospital) | .whenExitsPoi(.Hospital)
-Parking | .whenEntersPoi(.Parking) | .whenExitsPoi(.Parking)
-NightClub | .whenEntersPoi(.NightClub) | .whenExitsPoi(.NightClub)
-University | .whenEntersPoi(.University) | .whenExitsPoi(.University)
+Airport | .whenEntersPoi("TriggerName", type:.Airport) | .whenExitsPoi("TriggerName", type:.Airport)
+Bar | .whenEntersPoi("TriggerName", type:.Bar) | .whenExitsPoi("TriggerName", type:.Bar)
+Restaurant | .whenEntersPoi("TriggerName", type:.Restaurant) | .whenExitsPoi("TriggerName", type:.Restaurant)
+Mall | .whenEntersPoi("TriggerName", type:.Mall) | .whenExitsPoi("TriggerName", type:.Mall)
+Cafe | .whenEntersPoi("TriggerName", type:.Cafe) | .whenExitsPoi("TriggerName", type:.Cafe)
+Gym | .whenEntersPoi("TriggerName", type:.Gym) | .whenExitsPoi("TriggerName", type:.Gym)
+Lodging | .whenEntersPoi("TriggerName", type:.Lodging) | .whenExitsPoi("TriggerName", type:.Lodging)
+PoliceDepartment | .whenEntersPoi("TriggerName", type:.PoliceDepartment) | .whenExitsPoi("TriggerName", type:.PoliceDepartment)
+BusStation | .whenEntersPoi("TriggerName", type:.BusStation) | .whenExitsPoi("TriggerName", type:.BusStation)
+DepartmentStore | .whenEntersPoi("TriggerName", type:.DepartmentStore) | .whenExitsPoi("TriggerName", type:.DepartmentStore)
+FireStation | .whenEntersPoi("TriggerName", type:.FireStation) | .whenExitsPoi("TriggerName", type:.FireStation)
+Stadium | .whenEntersPoi("TriggerName", type:.Stadium) | .whenExitsPoi("TriggerName", type:.Stadium)
+Hospital | .whenEntersPoi("TriggerName", type:.Hospital) | .whenExitsPoi("TriggerName", type:.Hospital)
+Parking | .whenEntersPoi("TriggerName", type:.Parking) | .whenExitsPoi("TriggerName", type:.Parking)
+NightClub | .whenEntersPoi("TriggerName", type:.NightClub) | .whenExitsPoi("TriggerName", type:.NightClub)
+University | .whenEntersPoi("TriggerName", type:.University) | .whenExitsPoi("TriggerName", type:.University)
 
 
 ### Caveats
@@ -137,12 +125,12 @@ Gives you the ability to be notified when a user enters or exits their home or w
 
 ```swift
 // Will notify you when the user enters their Home
-let homeTrigger: Trigger? = FireTrigger.whenEntersPersonalizedPlace(.Home)
+let homeTrigger: Trigger? = FireTrigger.whenEntersPersonalizedPlace("ArrivedAtHome", type:.Home)
 ```
 
 ```objective_c
 // Will notify you when the user enters their Home
-Trigger *homeTrigger = [FireTrigger whenEntersPersonalizedPlace:PersonalizedPlaceTypeHome conditions:nil errorPtr:nil];
+Trigger *homeTrigger = [FireTrigger whenEntersPersonalizedPlace:@"ArrivedAtHome" type:PersonalizedPlaceTypeHome conditions:nil errorPtr:nil];
 ```
 
 
@@ -150,8 +138,8 @@ The currently supported personalized location categories are:
 
 Category | Transitions | |
 --------- | ------- |------- |
-Home | .whenEntersPersonalizedPlace(.Home) | .whenExitsPersonalizedPlace(.Home)
-Work | .whenEntersPersonalizedPlace(.Work) | .whenExitsPersonalizedPlace(.Work)
+Home | .whenEntersPersonalizedPlace("TriggerName", type:.Home) | .whenExitsPersonalizedPlace("TriggerName", type:.Home)
+Work | .whenEntersPersonalizedPlace("TriggerName", type:.Work) | .whenExitsPersonalizedPlace("TriggerName", type:.Work)
 
 ### Caveats
 - The SDK takes roughly a week to determine a user's home or work. After the SDK identifies the users home or work, it can then start detecting the users presence there.
@@ -167,14 +155,14 @@ A custom geofence allows you specify a region to monitor for entrance and exit. 
 ```swift
 let hq = CustomGeofence(latitude: 37.124, longitude: -127.456, radius: 50, customIdentifier: "Sense 360 Headquarters")
 let lunchSpot = CustomGeofence(latitude: 37.124, longitude: -127.456, radius: 50, customIdentifier: "A&B Bar and Grill")
-let geofenceTrigger: Trigger? = FireTrigger.whenEntersGeofences([hq, lunchSpot])
+let geofenceTrigger: Trigger? = FireTrigger.whenEntersGeofences("ArrivedAtGeofence", geofences:[hq, lunchSpot])
 ```
 
 ```objective_c
 CustomGeofence *hq = [[CustomGeofence alloc] initWithLatitude:37.124 longitude:-127.456 radius:50 customIdentifier:@"Sense 360 Headquarters"];
 CustomGeofence *lunchSpot = [[CustomGeofence alloc] initWithLatitude:37.124 longitude:-127.456 radius:50 customIdentifier:@"A&B Bar and Grill"];
 NSArray *geofences = [[NSArray alloc] initWithObjects:hq,lunchSpot,nil];
-[FireTrigger whenEntersGeofences: geofences conditions:nil errorPtr:nil];
+[FireTrigger whenEntersGeofences:@"ArrivedAtGeofence" geofences:geofences conditions:nil errorPtr:nil];
 ```
 
 All custom geofence triggers must specify the following parameters
@@ -199,7 +187,68 @@ CustomGeofence | .whenEntersGeofences() | .whenExitsGeofences()
 
 A conditional element is an extra restriction that you can create for a trigger that must be satisfied. A condition must be paired with a trigger and cannot stand alone.
 
-Several conditions may be applied when creating any type of trigger through the FireTrigger class.  All conditions applied to a trigger MUST be satisfied in order for the entire recipe to fire.
+Several conditions may be applied when creating any type of trigger through the FireTrigger class.  All conditions applied to a trigger MUST be satisfied in order for the entire trigger to fire.
+
+
+### Time Window
+
+A time window specifies which hours of the day a trigger is allowed to fire.
+
+```swift
+// This will only allow a trigger to fire between the hours of
+// 5pm and 10pm (in the users local time)
+let timeWindow = TimeWindow.create(fromHour: 17, toHour: 22)
+let restaurantTrigger = FireTrigger.whenEntersPoi("ArrivedAtRestaurant", type: .Restaurant, conditions: [timeWindow])
+```
+
+```objective_c
+// This will only allow a trigger to fire between the hours of
+// 5pm and 10pm (in the users local time)
+TimeWindow *timeWindow = [TimeWindow createFromHour:17 toHour:22 errorPtr:nil];
+NSArray* conditions = [[NSArray alloc] initWithObjects:timeWindow, nil];
+Trigger *restaurantTrigger = [FireTrigger whenEntersPoi:@"ArrivedAtRestaurant" type:PoiTypeRestaurant conditions:conditions errorPtr:nil];
+```
+
+#### Params
+Parameter | Type | Range | Required | Description
+--------- | ------- |------- | ----------- | -----------
+fromHour | Int | 0-23 | true | Window start time (user's local time)
+toHour | Int | 0-23 | true | Window end time (user's local time)
+
+
+#### Caveats
+
+- The transition must occur between the times specified. For example, if a user enters at 5am, and the window was set for 6am - 7am, the trigger WILL NOT fire, even if the user is still within the specified geofence at 6am.
+
+### Cooldown
+
+The amount of time after a trigger fires, to wait before the same trigger can fire again.
+
+```swift
+// Wait 2 days after the trigger fires before allowing it to fire again
+let cooldown = Cooldown.create(oncePer: 2, frequency: .Days)!
+let restaurantTrigger = FireTrigger.whenEntersPoi("ArrivedAtRestaurant", type: .Restaurant, conditions: [cooldown])
+```
+
+```objective_c
+// Wait 2 days after the trigger fires before allowing it to fire again
+Cooldown* cooldown = [Cooldown createWithOncePer:2 frequency:CooldownTimeUnitDays errorPtr:nil];
+NSArray* conditions = [[NSArray alloc] initWithObjects:cooldown, nil];
+Trigger *restaurantTrigger = [FireTrigger whenEntersPoi:@"ArrivedAtRestaurant" type:PoiTypeRestaurant conditions:conditions errorPtr:nil];
+```
+
+#### Values
+
+Unit | Signature 
+--------- | ------- |
+Minutes|Cooldown.create(oncePer: 5, frequency: .Minutes)!
+Hours|Cooldown.create(oncePer: 5, frequency: .Hours)!
+Days|Cooldown.create(oncePer: 5, frequency: .Days)!
+Default | Cooldown.create(oncePer: 30, frequency: .Minutes)!
+
+#### Caveats
+- The minimum cooldown time is 5 minutes.
+
 
 ###Activity Condition
 
@@ -209,12 +258,13 @@ For example, if you want to be notified when a user enters a restaurant, BUT onl
 
 ```swift
 let arrivedByCar = UsersActivity.arrivedBy(.Automotive)!
-let restaurantTrigger = FireTrigger.whenEntersPoi(.Restaurant, conditions: [arrivedByCar])
+let restaurantTrigger = FireTrigger.whenEntersPoi("ArrivedAtRestaurant", type: .Restaurant, conditions: [arrivedByCar])
 ```
 
 ```objective_c
 ConditionalElement* arrivedByCar = [UsersActivity arrivedBy:ActivityTypeAutomotive errorPtr:nil];
-Trigger *restaurantTrigger = [FireTrigger whenEntersPoi:PoiTypeRestaurant conditions: arrivedByCar errorPtr:nil];
+NSArray* conditions = [[NSArray alloc] initWithObjects:arrivedByCar, nil];
+Trigger *restaurantTrigger = [FireTrigger whenEntersPoi:@"ArrivedAtRestaurant" type:PoiTypeRestaurant conditions:conditions errorPtr:nil];
 ```
 
 
@@ -232,15 +282,15 @@ For example, you can trigger when a user enters a restaurant that is farther tha
 
 ```swift
 let fartherThanHome = UsersLocation.isFartherThanPersonalizedPlace(.Home, kilometers: 150)!
-let restaurantTrigger = FireTrigger.whenEntersPoi(.Restaurant, conditions: [fartherThanHome])
+let restaurantTrigger = FireTrigger.whenEntersPoi("ArrivedAtRestaurant", type: .Restaurant, conditions: [fartherThanHome])
 ```
 ```objective_c
 ConditionalElement *fartherThanHome = [UsersLocation
                                        isFartherThanPersonalizedPlace:PersonalizedPlaceTypeHome
                                        kilometers:[NSNumber numberWithInt:150]
-                                       errorPtr:errorPtr];
+                                       errorPtr:nil];
 NSArray* conditions = [[NSArray alloc] initWithObjects:fartherThanHome, nil];
-Trigger *restaurantTrigger = [FireTrigger whenEntersPoi:PoiTypeRestaurant conditions:conditions errorPtr:nil];
+Trigger *restaurantTrigger = [FireTrigger whenEntersPoi:@"ArrivedAtRestaurant" type:PoiTypeRestaurant conditions:conditions errorPtr:nil];
 ```
 
 Category | Transitions |
@@ -249,10 +299,10 @@ Home |  whenExitsPersonalizedPlace(.Work, kilometers: 10)
 Work | whenExitsPersonalizedPlace(.Work, kilometers: 10)
 CustomGeofence | .whenExitsGeofences([CustomGeofence], kilometers: 10)
 
-### Caveats:
+#### Caveats:
 
 - If you specify multiple geofences within a single condition, the user must be farther than ALL of the locations in order to trigger the callback.
-- If you need to create a fartherThan condition where user only needs to be [x] distance from one of multiple locations, you will need to create an individual Recipe PLUS Conditional Element per geofence.
+- If you need to create a fartherThan condition where user only needs to be [x] distance from one of multiple locations, you will need to create an individual Trigger PLUS Conditional Element per geofence.
 
 <aside class="warning"> Note: you cannot use the fartherThan condition with POI Place Types.
 </aside>
@@ -262,176 +312,68 @@ CustomGeofence | .whenExitsGeofences([CustomGeofence], kilometers: 10)
 When creating triggers an error can be returned instead of a trigger if an invalid trigger has been created.
 
 ```swift
-let errorPointer = SenseSdkErrorPointer()
-let result = FireTrigger.whenEntersPoi(.Airport, errorPtr: errorPointer)
-if let airportTrigger = result.trigger {
-  NSLog("Success monitoring airport entrance!")
+let errorPointer = SenseSdkErrorPointer.create()
+let trigger = FireTrigger.whenEntersPoi("ArrivedAtAirport", type: .Airport, errorPtr: errorPointer)
+if let airportTrigger = trigger {
+    NSLog("Success monitoring airport entrance!")
 } else {
-  NSLog("Error building airport trigger. Msg=" + errorPointer.error!.message)
+    NSLog("Error building airport trigger. Msg=" + errorPointer.error!.message)
 }
 ```
 
 ```objective_c
 SenseSdkErrorPointer *errorPtr = [SenseSdkErrorPointer create];
-Trigger *restaurantTrigger = [FireTrigger whenEntersPoi:PoiTypeRestaurant conditions:nil errorPtr:errorPtr];
+Trigger *restaurantTrigger = [FireTrigger whenEntersPoi:@"ArrivedAtRestaurant" type:PoiTypeRestaurant conditions:nil errorPtr:errorPtr];
 if(restaurantTrigger != nil) {
-  NSLog(@"Success monitoring airport entrance!");
+    NSLog(@"Success monitoring airport entrance!");
 } else {
-  NSLog(@"%@", errorPtr.error.message);
+    NSLog(@"%@", errorPtr.error.message);
 }
 ```
 
 In the event that there is an error when setting up a trigger, a nil will be returned with the error message stored within the corresponding SenseSdkErrorPointer.
-
-# Recipes
-
-The Recipe is the container that encases your trigger, and various other settings.  Recipes are registered globally within your application with a call to the [SenseSdk](#sensesdk).  Below are the inputs that make up a Recipe:
-
-```swift
-// Basic trigger. No time restriction. No cooldown. (can fire at most every 5 minutes)
-let recipe = Recipe(name: "My Recipe", trigger: someTrigger)
-```
-
-```objective_c
-Recipe *recipe = [[Recipe alloc] initWithName: @"My Recipe" 
-                                      trigger: someTrigger
-                                   timeWindow: [TimeWindow allDay]
-                                     cooldown: [Cooldown defaultCooldown]];
-```
-
-Parameter | Required | Default
---------- | -------  | --------
-uniqueId (String)| true |
-[trigger](#triggers) | true |
-[window](#window)| false | 0-23 hours
-[cooldown](#cooldown) | false | 5 minutes
-
-
-## Time Window
-
-A time window specifies which hours of the day a trigger is allowed to fire.
-
-```swift
-// This will only allow a trigger to fire between the hours of
-// 5pm and 10pm (in the users local time)
-let recipe = Recipe(
-  name: "My Recipe", 
-  trigger: someTrigger,
-  window: TimeWindow.create(fromHour: 17, toHour: 22))
-```
-
-```objective_c
-Recipe *recipe = [[Recipe alloc] initWithName: @"My Recipe"
-                                      trigger: someTrigger
-                                   timeWindow: [TimeWindow createFromHour:17 toHour:22 errorPtr:nil]
-                                     cooldown: [Cooldown defaultCooldown]];
-
-```
-
-#### Params
-Parameter | Type | Range | Required | Description
---------- | ------- |------- | ----------- | -----------
-fromHour | Int | 0-23 | true | Window start time (user's local time)
-toHour | Int | 0-23 | true | Window end time (user's local time)
-
-### Values
-
-Value | Description
---------- | ------- |
-allDay | No time restriction on firing |
-
-
-### Caveats
-
-- The transition must occur between the times specified. For example, if a user enters at 5am, and the window was set for 6am - 7am, the trigger WILL NOT fire, even if the user is still within the specified geofence at 6am.
-
-## Cooldown
-
-The amount of time after a trigger fires, to wait before the same trigger can fire again.
-
-```swift
-// Wait 2 days after the trigger fires
-let recipe = Recipe(
-  name: "My Recipe", 
-  trigger: someTrigger, 
-  cooldown: Cooldown.create(oncePer: 2, frequency: .Days)!
-```
-
-```objective_c
-// Wait 2 days after the trigger fires
-Recipe *recipe = [[Recipe alloc] initWithName: @"My Recipe"
-                                      trigger: someTrigger
-                                   timeWindow: [TimeWindow allDay]
-                                     cooldown: [Cooldown createWithOncePer:2 frequency:CooldownTimeUnitDays errorPtr:nil]];
-```
-
-### Values
-
-Unit | Signature 
---------- | ------- |
-Minutes|Cooldown.create(oncePer: 5, frequency: .Minutes)!
-Hours|Cooldown.create(oncePer: 5, frequency: .Hours)!
-Days|Cooldown.create(oncePer: 5, frequency: .Days)!
-Default | Cooldown.create(oncePer: 30, frequency: .Minutes)!
-
-### Caveats
-- The minimum cooldown time is 5 minutes.
-
 
 
 # Delegate
 
 The delegate is where you defined what YOUR app will do upon a trigger firing.  For example, if you want to send a message whenever a user enters a restaurtant, the delegate is where you write the code that would send the text message.
 
-In order to setup a delegate, you need to create a class that implements the RecipeFiredDelegate protocol.  In the example below, we will be logging all places received by the trigger once it fires:
+In order to setup a delegate, you need to create a class that implements the TriggerFiredDelegate protocol.  In the example below, we will be logging all places received by the trigger once it fires:
 
 ```swift
-class MyCallback : RecipeFiredDelegate {
-  func recipeFired(args: RecipeFiredArgs) {
-      for trigger in args.triggersFired {
-          for place in trigger.places {
-              //This is where YOU would write your custom code.
-              //As an example, I am logging the description of the place the user has arrived
-              NSLog(place.description)
-          }
-      }
-  }
+class MyCallback : TriggerFiredDelegate {
+    @objc func triggerFired(args: TriggerFiredArgs) {
+        for place in args.places {
+            //This is where YOU would write your custom code.
+            //As an example, I am logging the description of the place the user has arrived
+            NSLog(place.description)
+        }
+    }
 }
 ```
 
 ```objective_c
-@interface MyCallback : NSObject<RecipeFiredDelegate>
+@interface MyCallback : NSObject<TriggerFiredDelegate>
+@end
 
 @implementation MyCallback {
-  - (void)recipeFired:(RecipeFiredArgs*) args {
-      for (TriggerFiredArgs* trigger in [args triggersFired]) {
-          for (NSObject <NSCoding, Place>* place in [trigger places]) {
-              //This is where YOU would write your custom code.
-              //As an example, I am logging the description of the place the user has arrived
-              NSLog(@"%@", [place description]);
-          }
-      }
-  }
+    - (void)triggerFired:(TriggerFiredArgs*) args {
+        for (NSObject <NSCoding, Place>* place in [args places]) {
+            //This is where YOU would write your custom code.
+            //As an example, I am logging the description of the place the user has arrived
+            NSLog(@"%@", [place description]);
+        }
+    }
 }
+@end
 ```
 
-<aside class="warning"> In the event that your app was not running previously, your code will have 10 seconds to run once we call your recipe delegate method.
+<aside class="warning"> In the event that your app was not running previously, your code will have 10 seconds to run once we call your trigger delegate method.
 After which time, iOS is free to shutdown your app.
 </aside>
 
 
 There are 3 important classes that contain the information on where and when your trigger fired:
-
-
-## RecipeFiredArgs
-
-The details of the recipe when it is fired.
-
-Property | Type | Description
---------- | ------- |------- 
-recipe | [Recipe](#recipes) | The recipe you registered with the Sdk
-triggersFired | [[TriggerFiredArgs](#triggerfiredargs)] | An array of all triggers that fired within your recipe
-
 
 ## TriggerFiredArgs
 
@@ -444,7 +386,7 @@ timestamp | NSDate | The time at which this trigger fired
 
 ## Types of places
 
-Below is a list of the types of places that can be passed back when the Recipe fires. Which one is presented depends on the type of trigger you use.
+Below is a list of the types of places that can be passed back when the trigger fires. Which one is presented depends on the type of trigger you use.
 
 ### CustomGeofence
 
@@ -499,115 +441,105 @@ Work |
 
 ## Working with different types of places
 
-You may need to cast a place to the appropriate type once your recipe fires.  The following sample code shows you how to cast to any of the given types above depending on the place type:
+You may need to cast a place to the appropriate type once your trigger fires.  The following sample code shows you how to cast to any of the given types above depending on the place type:
 
 ```swift
-func recipeFired(args: RecipeFiredArgs) {
+@objc func triggerFired(args: TriggerFiredArgs) {
 
-        NSLog("Recipe \(args.recipe.name) fired at \(args.timestamp). ")
+        NSLog("Trigger \(args.trigger.name) fired at \(args.timestamp). ")
 
-        if args.triggersFired.count > 0 {
-            let triggerFired = args.triggersFired[0]
-            if triggerFired.places.count > 0 {
-                let place = triggerFired.places[0]
+        if args.places.count > 0 {
+            let place = args.places[0]
 
-                let transitionDesc = args.recipe.trigger.transitionType.description
-                switch(place.type) {
-                    case .CustomGeofence:
-                        if let geofence = place as? CustomGeofence {
-                            NSLog("\(transitionDesc) \(geofence.customIdentifier)")
-                        }
-                        break;
-                    case .Personal:
-                        if let personal = place as? PersonalizedPlace {
-                            NSLog("\(transitionDesc) \(personal.personalizedPlaceType.description)")
-                        }
-                        break;
-                    case .Poi:
-                        if let poi = place as? PoiPlace {
-                            NSLog("\(transitionDesc) \(poi.types[0].description)")
-                        }
-                        break;
-                }
+            let transitionDesc = args.trigger.transitionType.description
+            switch(place.type) {
+                case .CustomGeofence:
+                    if let geofence = place as? CustomGeofence {
+                        NSLog("\(transitionDesc) \(geofence.customIdentifier)")
+                    }
+                    break;
+                case .Personal:
+                    if let personal = place as? PersonalizedPlace {
+                        NSLog("\(transitionDesc) \(personal.personalizedPlaceType.description)")
+                    }
+                    break;
+                case .Poi:
+                    if let poi = place as? PoiPlace {
+                        NSLog("\(transitionDesc) \(poi.types[0].description)")
+                    }
+                    break;
             }
         }
     }
 ```
 
 ```objective_c
-- (void)recipeFired:(RecipeFiredArgs*) args {
+- (void)triggerFired:(TriggerFiredArgs*) args {
     //Your user has entered a restaurant!//
-    NSLog(@"Recipe %@ fired at %@.", args.recipe.name, args.timestamp);
-    
     NSString *transitionDesc;
-    if(args.recipe.trigger.transitionType == TransitionTypeEnter) {
+    if(args.trigger.transitionType == TransitionTypeEnter) {
         transitionDesc = @"Enter";
     } else {
         transitionDesc = @"Exit";
     }
     
-    if(args.triggersFired.count > 0) {
-        TriggerFiredArgs *trigger = (TriggerFiredArgs*) args.triggersFired[0];
+    NSObject<NSCoding, Place> *place = (NSObject<NSCoding, Place>*)args.places[0];
+    
+    if(place.type == PlaceTypeCustomGeofence) {
         
-        NSObject<NSCoding, Place> *place = (NSObject<NSCoding, Place>*)trigger.places[0];
+        CustomGeofence *geofence = (CustomGeofence*)place;
+        NSString *notificationBody = [[NSString alloc] initWithFormat: @"%@ %@", transitionDesc, geofence.customIdentifier];
+        [NotificationSender send:notificationBody];
         
-        if(place.type == PlaceTypeCustomGeofence) {
-            
-            CustomGeofence *geofence = (CustomGeofence*)place;
-            NSString *notificationBody = [[NSString alloc] initWithFormat: @"%@ %@", transitionDesc, geofence.customIdentifier];
-            [NotificationSender send:notificationBody];
-            
-        } else if(place.type == PlaceTypePersonal) {
-            
-            PersonalizedPlace *personalizedPlace = (PersonalizedPlace*)place;
-            NSString *personalizedPlaceType = [PersonalizedPlace getDescriptionOfPersonalizedPlaceType:(int)personalizedPlace.type];
-            NSString *notificationBody = [[NSString alloc] initWithFormat: @"%@ %@", transitionDesc,personalizedPlaceType];
-            [NotificationSender send:notificationBody];
-            
-        } else if(place.type == PlaceTypePoi) {
-            
-            PoiPlace *poiPlace = (PoiPlace*)place;
-            NSString *notificationBody = [[NSString alloc] initWithFormat: @"%@ %@", transitionDesc, poiPlace.description];
-            [NotificationSender send:notificationBody];
-            
-        }
+    } else if(place.type == PlaceTypePersonal) {
+        
+        PersonalizedPlace *personalizedPlace = (PersonalizedPlace*)place;
+        NSString *personalizedPlaceType = [PersonalizedPlace getDescriptionOfPersonalizedPlaceType:(int)personalizedPlace.type];
+        NSString *notificationBody = [[NSString alloc] initWithFormat: @"%@ %@", transitionDesc,personalizedPlaceType];
+        [NotificationSender send:notificationBody];
+        
+    } else if(place.type == PlaceTypePoi) {
+        
+        PoiPlace *poiPlace = (PoiPlace*)place;
+        NSString *notificationBody = [[NSString alloc] initWithFormat: @"%@ %@", transitionDesc, poiPlace.description];
+        [NotificationSender send:notificationBody];
+        
     }
 }
-
 ```
 
 
 # SenseSdk
 
-The SenseSdk is the main entry point into the SDK. It allows you to register and unregister recipes.
+The SenseSdk is the main entry point into the SDK. It allows you to register and unregister triggers.
 
 <aside class="warning"> You must call enableSdkWithKey in your AppDelegate's applicationDidFinishLaunching method.
 </aside>
 
 ```swift
-// Registering a recipe and delegate
-let success = SenseSdk.register(recipe: restaurantRecipe, delegate: self, errorPtr: nil)
+// Registering a trigger and delegate
+let success = SenseSdk.register(trigger: restaurantTrigger, delegate: self, errorPtr: nil)
 ```
 
 ```objective_c
-// Registering a recipe and delegate
-Boolean success = [SenseSdk registerWithRecipe:recipe delegate:callback errorPtr:nil];
+// Registering a trigger and delegate
+Boolean success = [SenseSdk registerWithTrigger:restaurantTrigger delegate:callback errorPtr:nil];
 ```
 
 Function | Parameters | Description
 --------- | ------- |------- 
 enableSdkWithKey | String | Enable the SDK with your application key (provided by Sense360)
-register | [Recipe](#recipes), [RecipeFiredDelegate](#handling-trigger-firing), [SenseSdkErrorPointer](#sensesdkerrorpointer) | Starts the recipe and registers the delegate to be called when the trigger fires.
-findRecipe | String | Finds and returns a recipe by name.
-unregister | String | Stops and removes the recipe from the SenseSdk by name.
-unregisterAll | | Stops and removes ALL recipes from the SenseSdk.
+register | [Trigger](#triggers), [TriggerFiredDelegate](#handling-trigger-firing), [SenseSdkErrorPointer](#sensesdkerrorpointer) | Starts the trigger and registers the delegate to be called when the trigger fires.
+findTrigger | String | Finds and returns a trigger by name.
+unregister | String | Stops and removes the trigger from the SenseSdk by name.
+unregisterAll | | Stops and removes ALL triggers from the SenseSdk.
 
 <aside class="notice"> Your application key will be validated regulary every few days.
 </aside>
 
 ## SenseSdkErrorPointer
 
-This class is used to communicate any errors on a registration of a recipe with the [SenseSdk](#sensesdk).
+This class is used to communicate any errors on a registration of a trigger with the [SenseSdk](#sensesdk).
 
 Containing Class | Property | Description
 --------- | ------- |------- | ---------
@@ -617,7 +549,7 @@ SenseSdkError | message | The error message
 
 ## Simulating Location
 
-Included with the SDK (and both starter projects) are sample GPX routes that will allow you to trigger recipes for each POI type. These simulate real world conditions and will take time to trigger your recipes. While building, you should use the SenseSdkTestUtilitiy (see [Unit Testing](#unit-testing) section below). These should be use to minimize your time testing in the real world.
+Included with the SDK (and both starter projects) are sample GPX routes that will allow you to fire triggers for each POI type. These simulate real world conditions and will take time to fire your triggers. While building, you should use the SenseSdkTestUtilitiy (see [Unit Testing](#unit-testing) section below). These should be use to minimize your time testing in the real world.
 
 <aside class="warning">These location simulations will only work on a real iPhone device. They will NOT work on the simulator.
 </aside>
@@ -628,7 +560,7 @@ Included with the SDK (and both starter projects) are sample GPX routes that wil
 1. Drag the file(s) you wish to test with into your Xcode project or click Debug -> Simulate Location -> Add GPX File to Project
   <img src = "img/gpx_step1a.png"/>
   <img src = "img/gpx_step1b.png"/>
-2. Make sure that at least one recipe is being registered (very important!)
+2. Make sure that at least one trigger is being registered (very important!)
 3. Turn your app on
 4. Simulate location (using the arrow, or Debug -> Simulate Location -> GPX File) and wait for a notification!
   <img src = "img/gpx_step4.png"/>
@@ -636,7 +568,7 @@ Included with the SDK (and both starter projects) are sample GPX routes that wil
 
 ## Debug Notifications
 
-If you wish to verify that your triggers and recipes are being registered properly, you can enable Debug Notifications with the SDK:
+If you wish to verify that your triggers are being registered properly, you can enable Debug Notifications with the SDK:
 
 1. Open your info.plist. (go to your project and hit the Info tab at the top of the screen)
 2. Add the key "sense360:sendDebugNotifications"
@@ -646,20 +578,20 @@ You should get notifications every time we believe the phone has arrived at a pl
 
 ## Unit Testing
 
-While you are building your application, you should use this method of testing because testing in the real world is time consuming. The SenseSdkTestUtility will trigger your recipe immediately if your recipe is registered properly. This method is helpful if you need to do quick iterations on your feature or if you want to verify your code works well.
+While you are building your application, you should use this method of testing because testing in the real world is time consuming. The SenseSdkTestUtility will fire your trigger immediately if your trigger is registered properly. This method is helpful if you need to do quick iterations on your feature or if you want to verify your code works well.
 
-The example below shows you how to fire a recipe called "ArrivedAtRestaurant" with a restaurant called "Big Foot's Burgers".
+The example below shows you how to fire a trigger called "ArrivedAtRestaurant" with a restaurant called "Big Foot's Burgers".
 
 ```swift
 //Create your fake restaurant
 let place = PoiPlace(latitude: 34.111, longitude: -118.111, radius: 50,
-  name: "Big Foot's Burgers", id: "id1", types: [.Restaurant])
+    name: "Big Foot's Burgers", id: "id1", types: [.Restaurant])
 
 let errorPointer = SenseSdkErrorPointer.create()
 // This method should only be used for testing
 SenseSdkTestUtility.fireTrigger(
-    fromRecipe: "ArrivedAtRestaurant",
-    ConfidenceLevel: ConfidenceLevel.Medium,
+    "ArrivedAtRestaurant",
+    confidenceLevel: ConfidenceLevel.Medium,
     places: [place],
     errorPtr: errorPointer
 )
@@ -681,7 +613,7 @@ SenseSdkErrorPointer* errorPtr = [SenseSdkErrorPointer create];
 
 // This method should only be used for testing
 NSArray* places = [[NSArray alloc] initWithObjects:poiPlace, nil];
-[SenseSdkTestUtility fireTriggerFromRecipe:@"ArrivedAtRestaurant"
+[SenseSdkTestUtility fireTrigger:@"ArrivedAtRestaurant"
                            confidenceLevel:ConfidenceLevelMedium
                                     places:places
                                   errorPtr:errorPtr];
@@ -692,7 +624,7 @@ if(errorPtr.error != nil) {
 
 You will have to create the correct type of place depending on the type of trigger.  For example, if you have you have the case of "Enter Home", then you must make a place of type PersonalizedPlace.  The list of place types with their corresponding types can be found under: [Places](#places)
 
-The example code below will show you how to create a personalized place, and fire a recipe named "ArrivedAtHome".
+The example code below will show you how to create a personalized place, and fire a trigger named "ArrivedAtHome".
 
 ```swift
 // Create a fake home location
@@ -706,7 +638,7 @@ let place = PersonalizedPlace(latitude: 34.111, longitude: -118.111,
 let errorPointer = SenseSdkErrorPointer.create()
 
 SenseSdkTestUtility.fireTrigger(
-    fromRecipe: "ArrivedAtHome",
+    "ArrivedAtHome",
     confidenceLevel: ConfidenceLevel.Medium,
     places: [place],
     errorPtr: errorPointer
@@ -735,7 +667,7 @@ SenseSdkErrorPointer *errorPtr = [SenseSdkErrorPointer create];
 
 // This method should only be used for testing
 NSArray* places = [[NSArray alloc] initWithObjects:personalizedPlace, nil];
-[SenseSdkTestUtility fireTriggerFromRecipe:@"ArrivedAtHome"
+[SenseSdkTestUtility fireTrigger:@"ArrivedAtHome"
                            confidenceLevel:ConfidenceLevelMedium
                                     places:places
                                   errorPtr:errorPtr];
@@ -744,7 +676,7 @@ if(errorPtr.error != nil) {
 }
 ```
 
-The example code below will show you how to test a geofence, and fire a recipe named "ArrivedAtGeofence".
+The example code below will show you how to test a geofence, and fire a trigger named "ArrivedAtGeofence".
 
 ```swift
 // Create two test geofences
@@ -757,7 +689,7 @@ let errorPointer = SenseSdkErrorPointer.create()
 
 // This method should only be used for testing
 SenseSdkTestUtility.fireTrigger(
-    fromRecipe: "ArrivedAtGeofence",
+    "ArrivedAtGeofence",
     confidenceLevel: ConfidenceLevel.Medium,
     places: [geofence1, geofence2],
     errorPtr: errorPointer
@@ -780,7 +712,7 @@ SenseSdkErrorPointer *errorPtr = [SenseSdkErrorPointer create];
 
 // This method should only be used for testing, and will test with the NSArray *geofences
 NSArray* places = [[NSArray alloc] initWithObjects:geofence1, nil];
-[SenseSdkTestUtility fireTriggerFromRecipe:@"ArrivedAtGeofence"
+[SenseSdkTestUtility fireTrigger:@"ArrivedAtGeofence"
                            confidenceLevel:ConfidenceLevelMedium
                                     places:places
                                   errorPtr:errorPtr];
@@ -795,7 +727,7 @@ Please note that when you do real-world testing you need to mimic the action you
 
 For example, if you are testing entering a restaurant. Make sure that you are not in or around the restaurant before starting the test and that you are at least 1km away. Drive, walk, or bike to the restaurant and make sure to enter it fully, sit down at a table, and stay at least five minutes. The more your testing reflects the way you would perform that action in the real-world, the more likely it is that our algorithms will pick it up.
 
-1. Make sure that at least one recipe is being registered (very important!)
+1. Make sure that at least one trigger is being registered (very important!)
 2. Turn your app on
 3. Move at least a kilometer from your current location and then got a place that you expect your trigger to fire (e.g. a restaurant). Sit down and wait for the notification!
 
