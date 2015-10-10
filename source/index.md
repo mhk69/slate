@@ -26,8 +26,8 @@ Have fun creating!
 
 # Requirements
 
-- Must be using Xcode 6.3+. (We do not support Xcode 7.0-beta yet)
-- Deployment target must be iOS 8.0+
+- Must be using Xcode 7.0.
+- Deployment target must be iOS 8.0.
 
 # Template Project
 
@@ -38,9 +38,15 @@ The same project but for objective-c can be found at: <a href='https://github.co
 # Download
 
 ## Latest
-You can download the latest framework <a href='https://s3-us-west-1.amazonaws.com/sense360-public-files/sdk/SenseSdk.framework-latest.zip' onclick= "clickedDownloadLibraryLink()">here</a> (Version 1.2). Release Notes can be found [here](#version-1.2).
+You can download the latest framework <a href='https://s3-us-west-1.amazonaws.com/sense360-public-files/sdk/SenseSdk.framework-latest.zip' onclick= "clickedDownloadLibraryLink()">here</a> (Version 2.1). 
+
+Upgrading from Version 1.x to Version 2.x requires some code migration, our guide can be found <a href='migration_guide.html'>here</a>.
+
+Release Notes can be found [here](#version-2.1).
 
 ### Previous
+- <a href='https://s3-us-west-1.amazonaws.com/sense360-public-files/sdk/SenseSdk.framework-2.0.zip'>Download Version 2.0</a>
+- <a href='https://s3-us-west-1.amazonaws.com/sense360-public-files/sdk/SenseSdk.framework-1.2.zip'>Download Version 1.2</a>
 - <a href='https://s3-us-west-1.amazonaws.com/sense360-public-files/sdk/SenseSdk.framework-1.1.zip'>Download Version 1.1</a>
 
 # Quick Start
@@ -100,19 +106,21 @@ Category | Transitions | |
 --------- | ------- |------- |
 Airport | .whenEntersPoi("TriggerName", type:.Airport) | .whenExitsPoi("TriggerName", type:.Airport)
 Bar | .whenEntersPoi("TriggerName", type:.Bar) | .whenExitsPoi("TriggerName", type:.Bar)
-Restaurant | .whenEntersPoi("TriggerName", type:.Restaurant) | .whenExitsPoi("TriggerName", type:.Restaurant)
-Mall | .whenEntersPoi("TriggerName", type:.Mall) | .whenExitsPoi("TriggerName", type:.Mall)
-Cafe | .whenEntersPoi("TriggerName", type:.Cafe) | .whenExitsPoi("TriggerName", type:.Cafe)
-Gym | .whenEntersPoi("TriggerName", type:.Gym) | .whenExitsPoi("TriggerName", type:.Gym)
-Lodging | .whenEntersPoi("TriggerName", type:.Lodging) | .whenExitsPoi("TriggerName", type:.Lodging)
-PoliceDepartment | .whenEntersPoi("TriggerName", type:.PoliceDepartment) | .whenExitsPoi("TriggerName", type:.PoliceDepartment)
 BusStation | .whenEntersPoi("TriggerName", type:.BusStation) | .whenExitsPoi("TriggerName", type:.BusStation)
+Cafe | .whenEntersPoi("TriggerName", type:.Cafe) | .whenExitsPoi("TriggerName", type:.Cafe)
 DepartmentStore | .whenEntersPoi("TriggerName", type:.DepartmentStore) | .whenExitsPoi("TriggerName", type:.DepartmentStore)
 FireStation | .whenEntersPoi("TriggerName", type:.FireStation) | .whenExitsPoi("TriggerName", type:.FireStation)
-Stadium | .whenEntersPoi("TriggerName", type:.Stadium) | .whenExitsPoi("TriggerName", type:.Stadium)
+Gym | .whenEntersPoi("TriggerName", type:.Gym) | .whenExitsPoi("TriggerName", type:.Gym)
 Hospital | .whenEntersPoi("TriggerName", type:.Hospital) | .whenExitsPoi("TriggerName", type:.Hospital)
-Parking | .whenEntersPoi("TriggerName", type:.Parking) | .whenExitsPoi("TriggerName", type:.Parking)
+Lodging | .whenEntersPoi("TriggerName", type:.Lodging) | .whenExitsPoi("TriggerName", type:.Lodging)
+Mall | .whenEntersPoi("TriggerName", type:.Mall) | .whenExitsPoi("TriggerName", type:.Mall)
+MovieTheater | .whenEntersPoi("TriggerName", type:.MovieTheater) | .whenExitsPoi("TriggerName", type:.MovieTheater)
 NightClub | .whenEntersPoi("TriggerName", type:.NightClub) | .whenExitsPoi("TriggerName", type:.NightClub)
+Parking | .whenEntersPoi("TriggerName", type:.Parking) | .whenExitsPoi("TriggerName", type:.Parking)
+PoliceDepartment | .whenEntersPoi("TriggerName", type:.PoliceDepartment) | .whenExitsPoi("TriggerName", type:.PoliceDepartment)
+Restaurant | .whenEntersPoi("TriggerName", type:.Restaurant) | .whenExitsPoi("TriggerName", type:.Restaurant)
+Supermarket | .whenEntersPoi("TriggerName", type:.Supermarket) | .whenExitsPoi("TriggerName", type:.Supermarket)
+Stadium | .whenEntersPoi("TriggerName", type:.Stadium) | .whenExitsPoi("TriggerName", type:.Stadium)
 University | .whenEntersPoi("TriggerName", type:.University) | .whenExitsPoi("TriggerName", type:.University)
 
 
@@ -268,11 +276,14 @@ Trigger *restaurantTrigger = [FireTrigger whenEntersPoi:@"ArrivedAtRestaurant" t
 ```
 
 
-There are 5 types of activities available:
+There are 4 types of activities available:
+
+ |
+--------- |
 walking |
 running |
 automotive |
-cycling
+cycling |
 
 ### Farther Than Condition
 
@@ -732,6 +743,17 @@ For example, if you are testing entering a restaurant. Make sure that you are no
 3. Move at least a kilometer from your current location and then got a place that you expect your trigger to fire (e.g. a restaurant). Sit down and wait for the notification!
 
 # Release Notes
+
+## Version 2.1
+
+- Support for iOS9 and Xcode 7
+
+## Version 2.0
+ 
+- Interface breaking changes, migration guide can be found at <a href='http://sense360.com/migration_guide.html'>here</a>.
+- Removed recipes from the SDK
+- Cooldown and Time Window are now conditions
+- Added new PoiType categories: Supermarket, Movie theater
 
 ## Version 1.2
  
